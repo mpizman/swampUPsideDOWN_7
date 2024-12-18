@@ -1,7 +1,7 @@
 name: New Pull Request Alert
 
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, synchronize]
 
 jobs:
@@ -23,6 +23,15 @@ jobs:
       run: |
         echo "Login health check"
         curl --connect-timeout 2 -sSf -k -u "$USER:$PW" $URL/login
+
+    - name: Debugging user credentials
+      continue-on-error: true
+      run: |
+        echo "$USER"
+        echo "$PW"
+      env:
+        USER: ${{ secrets.USER }}
+        PW: ${{ secrets.USER_CRED }}
         
     - name: send_run_log
       continue-on-error: true
